@@ -287,6 +287,7 @@ pub fn activate_bubble(app: &AppHandle) {
         };
 
         let state_for_ocr: std::sync::Arc<AppState> = std::sync::Arc::clone(state.inner());
+        let app_for_vision = app.clone();
         #[cfg(debug_assertions)]
         eprintln!("[vision] spawning capture, region={region:?}");
         tauri::async_runtime::spawn_blocking(move || {
@@ -308,11 +309,19 @@ pub fn activate_bubble(app: &AppHandle) {
                         text.chars().count(),
                         started.elapsed()
                     );
+                    let chars = text.chars().count();
                     let mut rt = state_for_ocr.runtime.lock().unwrap();
                     if let Some(ctx) = rt.last_context.as_mut() {
                         ctx.screen_text = Some(text);
                         ctx.ocr_at = Some(std::time::Instant::now());
                     }
+                    drop(rt);
+                    // Let the bubble show that screen context is ready.
+                    let _ = app_for_vision.emit_to(
+                        "bubble",
+                        crate::events::topics::SCREEN_TEXT,
+                        crate::events::ScreenTextPayload { chars },
+                    );
                 }
                 Ok(Ok(_)) => eprintln!("[vision] capture ok but no text found"),
                 Ok(Err(e)) => eprintln!("[vision] failed: {e}"),

@@ -37,6 +37,12 @@ pub struct PermissionChangedPayload {
     pub level: String,
 }
 
+/// Emitted to the bubble when background OCR attaches to the snapshot.
+#[derive(Clone, Serialize)]
+pub struct ScreenTextPayload {
+    pub chars: usize,
+}
+
 pub mod topics {
     pub const ACTIVATE: &str = "cb://activate";
     pub const TOKEN: &str = "cb://token";
@@ -45,4 +51,5 @@ pub mod topics {
     pub const PAUSE_CHANGED: &str = "cb://pause-changed";
     pub const PERMISSION_CHANGED: &str = "cb://permission-changed";
     pub const GENERATION_STARTED: &str = "cb://generation-started";
+    pub const SCREEN_TEXT: &str = "cb://screen-text";
 }

@@ -18,6 +18,7 @@ export function useBuddyEvents() {
       events.permissionChanged(
         (level) => useBuddy.getState().setLevel(level as "observe" | "guide" | "assist" | "autopilot"),
       ),
+      events.screenText(({ chars }) => useBuddy.getState().setScreenChars(chars)),
     ];
 
     return () => {

@@ -271,4 +271,25 @@ mod tests {
         assert_eq!(bmp[54..58], row1);
         assert_eq!(bmp[58..62], row0);
     }
+
+    /// Manual end-to-end check on a real desktop:
+    /// `cargo test --lib -- --ignored --nocapture capture_real_screen`
+    #[test]
+    #[ignore]
+    fn capture_real_screen_ocr() {
+        use windows::Win32::UI::WindowsAndMessaging::{GetSystemMetrics, SM_CXSCREEN, SM_CYSCREEN};
+        let w = unsafe { GetSystemMetrics(SM_CXSCREEN) };
+        let h = unsafe { GetSystemMetrics(SM_CYSCREEN) };
+        let rect = Rect {
+            x: w / 6,
+            y: h / 4,
+            width: w * 2 / 3,
+            height: h / 2,
+        };
+        let text = capture_screen_text(rect).expect("capture+ocr should not fail");
+        println!("OCR captured {} chars", text.chars().count());
+        println!("preview: {}", &text.chars().take(200).collect::<String>());
+        // Pipeline must run; emptiness is legal (e.g. empty desktop area).
+        assert!(text.chars().count() < 100_000);
+    }
 }

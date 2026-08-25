@@ -6,24 +6,26 @@ Cursor Buddy is a Windows-native AI companion. Press **Ctrl+Shift+Space** anywhe
 small bubble appears beside your mouse cursor — already aware of which application you're
 using, so you can ask about what's in front of you without explaining it.
 
-## Current status: Phase 1 (working shell)
-
-Implemented today:
+## Current status: Phases 1–2 (working shell + screen context)
 
 - System tray with Pause AI, Permission Level, Settings, Quit
 - Global activation shortcut (**Ctrl+Shift+Space**, remappable in Settings)
 - Cursor detection + multi-monitor/DPI-aware popup placement (never off-screen)
+- Draggable, pinnable bubble UX
 - Active-window/process detection captured *before* the popup takes focus
-- Streaming chat via the OpenAI Responses API (agent loop lives in Rust; API key never
-  enters the web bundle)
+- Streaming chat via OpenAI **and** Gemini (provider auto-detected from API key;
+  credentials never enter the web bundle)
 - Context-aware system prompt (active app, window title, cursor position)
+- **Screen context (Phase 2)**: on-demand GDI capture of the active window +
+  Windows.Media.Ocr text extraction (zh/en), in-memory only with a 5-minute TTL,
+  fed into answers — visible as a `screen ✓` chip in the bubble
 - Chinese/translation-aware response mode when your message contains Chinese text
 - SQLite persistence for settings, conversations, and messages
 - Permission levels (Observe / Guide / Assist / Autopilot) wired through a Safety Layer
   that gates all future computer-control actions
 - First-run welcome, settings UI, conversation history
 
-Roadmap phases: screen context & vision → UI Automation & Explain This → guidance overlay →
+Roadmap: screen context & vision ✅ → UI Automation & Explain This → guidance overlay →
 computer control → teaching & memory. See the architecture notes at the bottom.
 
 ## Prerequisites

@@ -18,6 +18,7 @@ export function Bubble() {
   const paused = useBuddy((s) => s.paused);
   const level = useBuddy((s) => s.level);
   const pinned = useBuddy((s) => s.pinned);
+  const screenChars = useBuddy((s) => s.screenChars);
   const appName = useBuddy((s) => s.appName);
   const windowTitle = useBuddy((s) => s.windowTitle);
   const status = useBuddy((s) => s.status);
@@ -90,6 +91,7 @@ export function Bubble() {
           </span>
           <span className="ml-auto flex items-center gap-1.5">
             <ContextChip appName={appName} title={windowTitle} />
+            <ScreenChip chars={screenChars} />
             <PermissionChip level={level} />
             <button
               onClick={togglePinned}
@@ -158,6 +160,27 @@ function EmptyBody({ onPick }: { onPick: (t: string) => void }) {
         ))}
       </div>
     </div>
+  );
+}
+
+function ScreenChip({ chars }: { chars: number | null }) {
+  if (chars === null) {
+    return (
+      <span
+        className="rounded-md bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-zinc-500"
+        title="Reading screen…"
+      >
+        screen…
+      </span>
+    );
+  }
+  return (
+    <span
+      className="rounded-md bg-emerald-500/10 px-1.5 py-0.5 text-[10px] text-emerald-300"
+      title={`Screen text captured (${chars} characters) — included in answers`}
+    >
+      screen ✓{chars > 0 ? ` ${chars}` : ""}
+    </span>
   );
 }
 

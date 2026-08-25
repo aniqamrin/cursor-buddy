@@ -46,4 +46,6 @@ export const events = {
     listen<{ paused: boolean }>("cb://pause-changed", (e) => h(e.payload.paused)),
   permissionChanged: (h: Handler<string>): Promise<UnlistenFn> =>
     listen<{ level: string }>("cb://permission-changed", (e) => h(e.payload.level)),
+  screenText: (h: Handler<{ chars: number }>): Promise<UnlistenFn> =>
+    listen<{ chars: number }>("cb://screen-text", (e) => h(e.payload)),
 };

@@ -21,11 +21,14 @@ interface BuddyState {
   activationCount: number;
   /** Pinned bubbles ignore blur-dismissal and keep their position. */
   pinned: boolean;
+  /** Character count of OCR'd screen text for this activation (null = pending). */
+  screenChars: number | null;
 
   activate: (p: ActivatePayload) => void;
   setPaused: (paused: boolean) => void;
   setLevel: (level: PermissionLevel) => void;
   setPinned: (pinned: boolean) => void;
+  setScreenChars: (chars: number | null) => void;
   seedMessages: (messages: ChatMsg[]) => void;
   pushLocalUserMessage: (content: string) => void;
   generationStarted: () => void;
@@ -45,6 +48,7 @@ export const useBuddy = create<BuddyState>((set) => ({
   error: null,
   activationCount: 0,
   pinned: false,
+  screenChars: null,
 
   activate: (p) =>
     set((s) => ({
@@ -54,11 +58,13 @@ export const useBuddy = create<BuddyState>((set) => ({
       level: p.permission_level,
       error: null,
       activationCount: s.activationCount + 1,
+      screenChars: null, // fresh activation: OCR pending again
     })),
 
   setPaused: (paused) => set({ paused }),
   setLevel: (level) => set({ level }),
   setPinned: (pinned) => set({ pinned }),
+  setScreenChars: (chars) => set({ screenChars: chars }),
   seedMessages: (messages) => set({ messages, streamingText: "", status: "idle" }),
 
   pushLocalUserMessage: (content) =>
