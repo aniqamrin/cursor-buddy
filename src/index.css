@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system,
+    sans-serif;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: transparent;
+  font-family: var(--font-sans);
+  overflow: hidden;
+  user-select: none;
+  cursor: default;
+}
+
+input,
+textarea {
+  user-select: text;
+}
+
+/* --- activation pop-in --- */
+@keyframes cb-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.cb-pop {
+  animation: cb-pop 170ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+/* --- thinking orb --- */
+@keyframes cb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.cb-orb-ring {
+  background: conic-gradient(
+    from 0deg,
+    #a78bfa,
+    #22d3ee,
+    #f472b6,
+    #a78bfa
+  );
+  animation: cb-spin 2.2s linear infinite;
+}
+.cb-orb-idle {
+  background: radial-gradient(circle at 30% 30%, #c4b5fd, #7c3aed);
+}
+
+/* --- streaming caret --- */
+@keyframes cb-blink {
+  50% {
+    opacity: 0.15;
+  }
+}
+.cb-caret {
+  animation: cb-blink 1s steps(1) infinite;
+}
+
+/* --- soft pulse for guidance states --- */
+@keyframes cb-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+.cb-pulse {
+  animation: cb-pulse 1.6s ease-in-out infinite;
+}
+
+/* thin scrollbars */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
